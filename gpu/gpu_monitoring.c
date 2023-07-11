@@ -68,6 +68,7 @@ int main(int argc, char ** argv){
 	dcgm_ret = dcgmInit();
 
 	if (dcgm_ret != DCGM_ST_OK){
+		printf("INIT ERROR\n\n");
 		cleanup_and_exit(dcgm_ret, NULL, NULL, NULL);
 	}
 
@@ -75,6 +76,7 @@ int main(int argc, char ** argv){
 	dcgm_ret = dcgmStartEmbedded(DCGM_OPERATION_MODE_AUTO, &dcgmHandle);
 
 	if (dcgm_ret != DCGM_ST_OK){
+		printf("START EMBED ERROR\n\n");
 		cleanup_and_exit(dcgm_ret, &dcgmHandle, NULL, NULL);
 	}
 
@@ -87,6 +89,7 @@ int main(int argc, char ** argv){
 	dcgm_ret = dcgmGetAllSupportedDevices(dcgmHandle, gpuIdList, &gpuCount);
 
 	if (dcgm_ret != DCGM_ST_OK){
+		printf("GET DEVICES ERROR\n\n");
 		cleanup_and_exit(dcgm_ret, &dcgmHandle, NULL, NULL);
 	}	
 
@@ -104,6 +107,7 @@ int main(int argc, char ** argv){
 	dcgm_ret = dcgmGroupCreate(dcgmHandle, DCGM_GROUP_DEFAULT, groupName, &groupId);
 
 	if (dcgm_ret != DCGM_ST_OK){
+		printf("GROUP CREATE ERROR\n\n");
 		cleanup_and_exit(dcgm_ret, &dcgmHandle, &groupId, NULL);
 	}
 
@@ -137,12 +141,14 @@ int main(int argc, char ** argv){
 	dcgm_ret = dcgmWatchFields(dcgmHandle, groupId, fieldGroupId, update_freq_micros, max_keep_seconds, max_keep_samples);
 
 	if (dcgm_ret != DCGM_ST_OK){
+		printf("WATCH FIELDS ERROR\n\n");
 		cleanup_and_exit(dcgm_ret, &dcgmHandle, &groupId, &fieldGroupId);
 	}
 
 	dcgm_ret = dcgmUpdateAllFields(dcgmHandle, 1);
 
 	if (dcgm_ret != DCGM_ST_OK){
+		printf("UPDATE ALL FIELDS ERROR\n\n");
 		cleanup_and_exit(dcgm_ret, &dcgmHandle, &groupId, &fieldGroupId);
 	}
 
@@ -158,6 +164,7 @@ int main(int argc, char ** argv){
 		dcgm_ret = dcgmGetLatestValues(dcgmHandle, groupId, fieldGroupId, &copy_field_values_function, &field_values);
 
 		if (dcgm_ret != DCGM_ST_OK){
+			printf("GET LATEST VALUES ERROR\n\n");
 			cleanup_and_exit(dcgm_ret, &dcgmHandle, &groupId, &fieldGroupId);
 		}
 
